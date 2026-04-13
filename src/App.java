@@ -2,7 +2,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class App {
-    // Vetores de tamanhos predefinidos para os testes
     static final int[] tamanhosTesteGrande =  { 31_250_000, 62_500_000, 125_000_000, 250_000_000, 500_000_000 };
     static final int[] tamanhosTesteMedio =   {     12_500,     25_000,      50_000,     100_000,     200_000 };
     static final int[] tamanhosTestePequeno = {          3,          6,          12,          24,          48 };
@@ -48,15 +47,12 @@ public class App {
         System.out.println("            INICIANDO BATERIA DE TESTES DE ORDENAÇÃO                     ");
         System.out.println("=========================================================================\n");
 
-        // Loop pelos tamanhos médios. ATENÇÃO: para arrays muito grandes (100k+),
-        // algoritmos O(n^2) como Bolha/Inserção/Seleção podem demorar bastante!
+
         for (int tam : tamanhosTesteMedio) {
             System.out.println(">>> Testando com Vetor de Tamanho: " + tam + " <<<");
 
-            // Gera o vetor UMA VEZ para todos os algoritmos competirem de forma justa
             Integer[] vetorBase = gerarVetorObjetos(tam);
 
-            // Bateria de execução
             executarTeste(bolha, vetorBase, "Bubble Sort");
             executarTeste(insercao, vetorBase, "Insertion Sort");
             executarTeste(selecao, vetorBase, "Selection Sort");
