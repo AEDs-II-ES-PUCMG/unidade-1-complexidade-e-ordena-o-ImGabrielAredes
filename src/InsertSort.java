@@ -65,6 +65,12 @@ public class InsertSort<T extends Comparable<T>> implements IOrdenador<T>{
 	    return  0;
 	}
 
+	@Override
+	public void setComparador(Comparator<T> comparador) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'setComparador'");
+	}
+
 	
 
 	

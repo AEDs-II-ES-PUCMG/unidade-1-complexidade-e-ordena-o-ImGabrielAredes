@@ -3,13 +3,17 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
+
 
 public class AppOficina {
 
     static final int MAX_PEDIDOS = 100;
     static Produto[] produtos;
     static int quantProdutos = 0;
+    static int quantPedidos = 0;
+    static int pedidos = 0;
     static String nomeArquivoDados = "produtos.txt";
     static IOrdenador<Produto> ordenador;
 
@@ -29,6 +33,8 @@ public class AppOficina {
         }
         return valor;
     }
+
+    
 
     static void limparTela() {
         System.out.print("\033[H\033[2J");
@@ -97,6 +103,8 @@ public class AppOficina {
         }
         return dadosCarregados;
     }
+
+    
 
     static Produto buscaBinariaPorCodigo(int codigo) {
         int inicio = 0;
@@ -236,6 +244,101 @@ public class AppOficina {
         }
     }
 
+        static void ordenarPedidos() {
+        cabecalho();
+        
+        System.out.println("--- Escolha o Algoritmo ---");
+        System.out.println("1 - Bolha");
+        System.out.println("2 - Seleção");
+        System.out.println("3 - Inserção");
+        System.out.println("4 - Mergesort");
+        System.out.println("5 - Heapsort");
+        Integer opcaoMetodo = lerNumero("Sua opção", Integer.class);
+        if (opcaoMetodo == null || opcaoMetodo < 1 || opcaoMetodo > 5) return;
+
+        System.out.println("\n--- Escolha o Critério ---");
+        System.out.println("1 - Critério A (Valor Final > Volume > ID)");
+        System.out.println("2 - Critério B (Volume Físico > Data > ID)");
+        System.out.println("3 - Critério C (Economia [Decrescente] > Valor Final > ID)");
+        Integer opcaoCriterio = lerNumero("Sua opção", Integer.class);
+        if (opcaoCriterio == null || opcaoCriterio < 1 || opcaoCriterio > 3) return;
+
+        // 1. Polimorfismo do Algoritmo
+        IOrdenador<Pedido> ordenadorPedidos = null;
+        switch (opcaoMetodo) {
+            case 1 -> ordenadorPedidos = new Bubblesort<>();
+            case 2 -> ordenadorPedidos = new SelectionSort<>();
+            case 3 -> ordenadorPedidos = new Insertionsort<>();
+            case 4 -> ordenadorPedidos = new Mergesort<>();
+            case 5 -> ordenadorPedidos = new Heapsort<>(); 
+        }
+
+        Comparator<Pedido> comparador = null;
+        switch (opcaoCriterio) {
+            case 1 -> comparador = new ComparadorCriterioA();
+            case 2 -> comparador = new ComparadorCriterioB();
+            case 3 -> comparador = new ComparadorCriterioC();
+        }
+
+        long tempoInicio = System.currentTimeMillis();
+        
+        Pedido[] vetorApenasValidos = Arrays.copyOf(pedidos, quantPedidos); // Evita ordenar posições nulas
+        Pedido[] pedidosOrdenados = ordenadorPedidos.ordenar(vetorApenasValidos, comparador);
+        
+        long tempoFim = System.currentTimeMillis();
+        
+        System.arraycopy(pedidosOrdenados, 0, pedidos, 0, quantPedidos);
+
+        System.out.println("\nOrdenação concluída com sucesso!");
+        System.out.println("Tempo estrito de ordenação: " + (tempoFim - tempoInicio) + " ms");
+    }
+
+        static void localizarPedidosPremium() {
+        cabecalho();
+        Double valorCorte = lerNumero("Digite o valor de corte para pedidos Premium (R$)", Double.class);
+        if (valorCorte == null) return;
+
+        System.out.println("\nPreparando dados (Ordenando por Critério A)...");
+        IOrdenador<Pedido> mergesort = new Mergesort<>();
+        Pedido[] vetorValidos = Arrays.copyOf(pedidos, quantPedidos);
+        Pedido[] pedidosOrdenadosPorValor = mergesort.ordenar(vetorValidos, new ComparadorCriterioA());
+
+        System.arraycopy(pedidosOrdenadosPorValor, 0, pedidos, 0, quantPedidos);
+
+        int indiceCorte = encontrarLimiteInferiorValor(pedidos, quantPedidos, valorCorte);
+
+        System.out.println("\n=== RESULTADO: PEDIDOS PREMIUM (>= R$ " + valorCorte + ") ===");
+        if (indiceCorte == -1) {
+            System.out.println("Nenhum pedido atinge este valor.");
+        } else {
+            for (int i = indiceCorte; i < quantPedidos; i++) {
+                System.out.println(pedidos[i].toString());
+                System.out.println("----------------------------------------");
+            }
+        }
+    }
+
+    
+
+     private static int encontrarLimiteInferiorValor(int pedidos2, int tamanho, double valorAlvo) {
+        int inicio = 0;
+        int fim = tamanho - 1;
+        int resposta = -1;
+
+        while (inicio <= fim) {
+            int meio = inicio + (fim - inicio) / 2;
+            
+            if (vetor[meio].valorFinal() >= valorAlvo) {
+                resposta = meio; 
+                fim = meio - 1;
+            } else {
+                inicio = meio + 1; 
+            }
+        }
+        
+    }
+
+
     public static void main(String[] args) {
         teclado = new Scanner(System.in);
         
@@ -272,5 +375,9 @@ public class AppOficina {
         } while (opcao != 0);
         
         teclado.close();
-    }                        
+    } 
+    
+    
+    
+
 }

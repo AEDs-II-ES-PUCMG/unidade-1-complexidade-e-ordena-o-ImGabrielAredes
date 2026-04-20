@@ -60,4 +60,10 @@ public class SelectionSort<T extends Comparable<T>> implements IOrdenador<T>{
 	public double getTempoOrdenacao() {
 	    return  0;
 	}
+
+	@Override
+	public void setComparador(Comparator<T> comparador) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'setComparador'");
+	}
 }

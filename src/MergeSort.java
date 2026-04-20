@@ -16,13 +16,12 @@ public class Mergesort<T extends Comparable<T>> implements IOrdenador<T>{
             comparacoes = 0;
             movimentacoes = 0;
         }
-         
+
         @Override
         public T[] ordenar(T[] dados) {    
             return ordenar(dados, T::compareTo);
         }
 
-        @Override
         public T[] ordenar(T[] dados, Comparator<T> comparador) {    
             this.comparador = comparador;
             int tamanho = dados.length;
@@ -62,19 +61,18 @@ public class Mergesort<T extends Comparable<T>> implements IOrdenador<T>{
             }
             int origem = indice1;
             int destino = meio;
-           
             if(indice1 > meio){
                 origem = indice2;
                 destino = fim;
             }
-           
+
             for(int i = origem; i<=destino; i++){
                 novo[pos++] = dados[i];
                 movimentacoes++;
             }
             return novo;
         }        
- 
+
         public long getComparacoes() {
             return comparacoes;
         }
@@ -85,6 +83,12 @@ public class Mergesort<T extends Comparable<T>> implements IOrdenador<T>{
         
         public double getTempoOrdenacao() {
             return 0;
+        }
+
+        @Override
+        public void setComparador(Comparator<T> comparador) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'setComparador'");
         }
 
 }
