@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class InsertionSort<T extends Comparable<T>> implements IOrdenador<T> {
+public class Insertionsort<T extends Comparable<T>> implements IOrdenador<T> {
     private int comparacoes;
     private int movimentacoes;
     private double tempoOrdenacao;

@@ -39,7 +39,7 @@ public class App {
     public static void main(String[] args) {
         // Instancia os algoritmos polimorficamente através da Interface
         IOrdenador<Integer> bolha = new Bubblesort<>();
-        IOrdenador<Integer> insercao = new InsertionSort<>();
+        IOrdenador<Integer> insercao = new Insertionsort<>();
         IOrdenador<Integer> selecao = new SelectionSort<>();
         IOrdenador<Integer> merge = new Mergesort<>();
 
